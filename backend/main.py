@@ -7,13 +7,13 @@ from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI()
-app.mount("/", StaticFiles(directory="./frontend",html=True), name="frontend")
+
 
 @app.post("/register")
 def add_user(user : CreateUser,db=Depends(get_db)):
     existing_user = db.query(UserModel).filter(UserModel.email==user.email).first()
     if existing_user:
-       return {"message" : "account aldready exists with this E-mail adress"}
+       return {"success":False,"message" : "account aldready exists with this E-mail adress"}
     
     # hashed password
     hashed_password = bcrypt.hash(user.password)
@@ -28,17 +28,18 @@ def add_user(user : CreateUser,db=Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    return {"success": True, "message": "Registration successful!"}
 
 @app.post("/login")
 def login_user(user : UserLogin,db=Depends(get_db)):
     user_exists = db.query(UserModel).filter(UserModel.email==user.email).first()
     if user_exists:
         if bcrypt.verify(user.password,user_exists.password):
-            return {"message" : "Logged in"}
+            return {"success" : True, "message" : "Logged in"}
         else:
-            return {"message" : "wrong password, try agiain"}    
+            return {"success" : False, "message" : "wrong password, try agiain"}    
     else:
-        return {"message" : "user doesnt exist , please create a new account"}
+        return {"success" : False, "message" : "user doesnt exist , please create a new account"}
 
 @app.post("/add_info")
 def add_info(info:PersonalInfo,user_email:str,db=Depends(get_db)):    
@@ -77,6 +78,8 @@ def edit_info(info:PersonalInfo,db=Depends(get_db)):
     user_info.draws = info.draws
 
     db.commit()
+
+app.mount("/", StaticFiles(directory="./frontend",html=True), name="frontend")
 
 
 

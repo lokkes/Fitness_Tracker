@@ -57,7 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            if (data.success){
+                window.location.href = "home.html";
+            }
+            else {
+                 alert(data.message);
+            }
+           
+            
         })
         .catch(error => {
             console.error('Login error:', error);

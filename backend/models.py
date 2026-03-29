@@ -12,6 +12,7 @@ class UserInfo(Base):
     __tablename__ = "user_info"
     id = Column(Integer,primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id")) 
+    image_path = Column(String,nullable=True)
     name = Column(String,nullable=False)
     height = Column(Float,nullable=False)
     weight = Column(Float,nullable=False)

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById("email-register").value;
         const password = document.getElementById("password-register").value;
 
-        fetch("http://127.0.0.1:8000/register", {
+        fetch("/register", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ name, email, password })
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById("email-login").value;
         const password = document.getElementById("password-login").value;
 
-        fetch("http://127.0.0.1:8000/login", {
+        fetch("/login", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success){
-                window.location.href = "home.html";
+                window.location.href = "/home.html";
             }
             else {
                  alert(data.message);

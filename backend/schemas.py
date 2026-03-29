@@ -13,6 +13,7 @@ class UserLogin(BaseModel):
 class PersonalInfo(BaseModel):
     email:str
     name:str
+    image_path:str
     height:float
     weight:float
     fights:int

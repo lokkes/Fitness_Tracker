@@ -1,0 +1,29 @@
+.hero {
+    position: relative;
+    background: url('/static/images/moh.jpg') top/cover no-repeat;
+    height: 100vh;
+    color: pink;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.form-container form {
+    margin: 20px auto;
+    max-width: 400px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: black;
+}
+
+
+

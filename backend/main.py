@@ -1,12 +1,16 @@
+from pathlib import Path
 from fastapi import FastAPI,HTTPException,Depends
 from .schemas import CreateUser,UserLogin,PersonalInfo
 from .db import sessionLocal,get_db
 from passlib.hash import bcrypt
 from .models import user as UserModel, UserInfo
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 
 app = FastAPI()
+FRONTEND_DIR = Path("./frontend")
+TEMPLATES_DIR = FRONTEND_DIR / "templates"
 
 
 @app.post("/register")
@@ -48,6 +52,7 @@ def add_info(info:PersonalInfo,user_email:str,db=Depends(get_db)):
         return {"error": "User not found"}
     user_info = UserInfo(
     user_id=user.id,
+    image = info.image_path,
     name=info.name,
     height=info.height,
     weight=info.weight,
@@ -70,6 +75,7 @@ def edit_info(info:PersonalInfo,db=Depends(get_db)):
     if not user_info:
         return {"message": "User info not found"}
 
+    user_info.image_path = info.image_path
     user_info.height = info.height
     user_info.weight = info.weight
     user_info.fights = info.fights
@@ -79,7 +85,25 @@ def edit_info(info:PersonalInfo,db=Depends(get_db)):
 
     db.commit()
 
-app.mount("/", StaticFiles(directory="./frontend",html=True), name="frontend")
+@app.get("/")
+def root():
+    return FileResponse(TEMPLATES_DIR / "index.html")
+
+@app.get("/index.html")
+def index_page():
+    return FileResponse(TEMPLATES_DIR / "index.html")
+
+@app.get("/home.html")
+def home_page():
+    return FileResponse(TEMPLATES_DIR / "home.html")
+
+@app.get("/add_data.html")
+def add_data_page():
+    return FileResponse(TEMPLATES_DIR / "add_data.html")
+
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
+
 
 
 
@@ -95,6 +119,5 @@ app.mount("/", StaticFiles(directory="./frontend",html=True), name="frontend")
 
 
         
-
 
 

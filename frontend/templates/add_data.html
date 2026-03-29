@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Personal Data</title>
+    <link rel="stylesheet" href="/static/style/home.css?v=3">
+</head>
+<body>
+    <header class="header-dec">
+        <div class="header-container">
+            <div class="text-block">
+                <h1 class="username">Welcome, Username</h1>
+                <a href="/track_Performance">
+                    <p class="link-text">Track Performance</p>
+                </a>
+                <a href="/training_plan">
+                    <p class="link-text">Personalised training Plan</p>
+                </a>
+                <a href="/add_data.html">
+                    <p class="link-text">Personal data</p>
+                </a>
+
+            </div>
+            <div>
+             <a href="/profile.html.html" class = "profile">
+                    <p class="link-text">My Profile</p>
+            </a>
+            <button class="logout-btn"><a href="/" class = link-text>Logout</a></button>
+            </div>
+        </div>
+    </header>
+
+<main>
+    <section class = "form-section">
+        <h1>Add Data</h1>
+        <form class = "data-form">
+            <div class="mb-3">
+                <label for="photo-upload" class="form-label">Profile Photo</label>
+                <div id="photo-dropzone" class="photo-dropzone" tabindex="0">
+                    <input type="file" id="photo-upload" class="photo-input" accept="image/*">
+                    <p class="photo-dropzone-title">Drag and drop your photo here</p>
+                    <p class="photo-dropzone-subtitle">or click to choose an image</p>
+                </div>
+                <img id="photo-preview" class="photo-preview hidden" alt="Selected profile preview">
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+            </div>
+            <div class="mb-3">
+                <label for="height" class="form-label">Height</label>
+                <input type="text" id="height" class="form-control" placeholder="Height in cm" required>
+            </div>
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight</label>
+                <input type="text" id="weight" class="form-control" placeholder="Weight in kg" required>
+            </div>
+            <div class="mb-3">
+                <label for="fights" class="form-label">Fights</label>
+                <input type="text" id="fights" class="form-control" placeholder="Total fights" required>
+            </div>
+            <div class="mb-3">
+                <label for="wins" class="form-label">Wins</label>
+                <input type="text" id="wins" class="form-control" placeholder="Total wins" required>
+            </div>
+            <div class="mb-3">
+                <label for="losses" class="form-label">Losses</label>
+                <input type="text" id="losses" class="form-control" placeholder="Losses" required>
+            </div>
+            <div class="mb-3">
+                <label for="draws" class="form-label">Draws</label>
+                <input type="text" id="draws" class="form-control" placeholder="Draws" required>
+            </div>
+            <button type="submit" class="save-btn">Save</button>
+        
+        </form>
+    </section>
+</main>
+<script src="/static/js/add_data.js"></script>
+</body>
+</html>

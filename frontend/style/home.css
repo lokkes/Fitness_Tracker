@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* optional but recommended for consistent sizing */
+}
+html {
+    scroll-behavior: smooth;
+}
+
+.username {
+    margin-right: 30px; /* adds 20px space after username */
+}
+
+.header-dec h1{
+    color: whitesmoke;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* left text, right button */
+    align-items: flex-start;        /* align top */
+    padding: 20px 40px;
+    background-color: black;
+}
+
+.text h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FF1493;
+}
+
+.text p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: gray
+}
+
+.form-section{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 24px;
+    min-height: calc(100vh - 80px);
+    padding: 48px 100px;
+    background-color: #111;
+    color: whitesmoke;
+}
+
+.data-form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: min(100%, 520px);
+    padding: 28px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.mb-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    color: #f4f4f4;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #111;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #FF1493;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2);
+}
+
+.photo-dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 180px;
+    padding: 24px;
+    border: 2px dashed #FF1493;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #f4f4f4;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.photo-dropzone:hover,
+.photo-dropzone.dragover {
+    background-color: rgba(255, 20, 147, 0.08);
+    border-color: #ff66b6;
+    transform: translateY(-1px);
+}
+
+.photo-dropzone:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2);
+}
+
+.photo-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.photo-dropzone-title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.photo-dropzone-subtitle {
+    font-size: 0.95rem;
+    color: #d4d4d4;
+}
+
+.photo-preview {
+    width: 160px;
+    height: 160px;
+    margin-top: 12px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid #FF1493;
+}
+
+.hidden {
+    display: none;
+}
+
+.save-btn {
+    margin-top: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #D0006F;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #FF1493;
+}
+
+/* Each section */
+.motivation-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 120px 120px;
+}
+
+.home-container {
+    height: 100vh;
+    overflow-y: scroll;
+
+    scroll-snap-type: y mandatory;
+}
+
+.motivation-section {
+    scroll-snap-align: start;
+}
+
+.motivation-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.motivation-section img {
+    width: 350px;        /* fixed width */
+    height: auto;        /* keeps aspect ratio */
+}
+
+.link-text {
+    margin: 0;
+    color: whitesmoke;        /* dark pink */
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none; /* remove underline if desired */
+}
+
+.link-text:hover {
+    color: pink; /* optional hover effect */
+}
+
+.text-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.text-block .link-text {
+    margin-left: 20px;       /* indent the two p slightly */
+    margin-top: 5px;         /* space between h1 and ps */
+    cursor: pointer;         /* optional: indicate clickable */
+    color: whitesmoke;          /* or your dark pink */
+    font-weight: 500;
+}
+
+.logout-btn {
+    align-self: flex-start;  /* button aligns top of container */
+    padding: 10px 20px;
+    background-color: #D0006F; /* modern dark pink */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+.profile{
+   padding: 2%;
+}
+
+.logout-btn:hover {
+    background-color: #FF1493; /* hover effect */
+}

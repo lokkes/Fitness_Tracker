@@ -1,0 +1,125 @@
+body {
+    background: #ffffff;
+    color: #111111;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+main {
+    display: flex;
+    justify-content: center;  /* center horizontally */
+    align-items: flex-start;
+    min-height: calc(100vh - 80px);
+    padding: 48px 20px 72px;
+    background: #ffffff;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 620px;
+    width: 100%;
+    background: #ffffff;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 8px 0 0;
+    text-align: center;
+}
+
+.container h1 {
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #111111;
+    text-transform: capitalize;
+}
+
+.record-container {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.record-container p {
+    min-width: 110px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: #f6f6f6;
+    border: 1px solid #e6e6e6;
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.record-container p:nth-child(1) { color: #4CAF50; }  /* Wins */
+.record-container p:nth-child(2) { color: #f44336; }  /* Losses */
+.record-container p:nth-child(3) { color: #ff9800; }  /* Draws */
+
+.container img {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    height: auto;
+    border-radius: 24px;
+    margin-top: 6px;
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 18px 45px rgba(17, 17, 17, 0.08);
+}
+
+.info-section {
+    padding-top: 8px;
+    border-top: 1px solid #ececec;
+    text-align: left;
+}
+
+.info-section h1 {
+    font-size: 1.15rem;
+    color: #111111;
+    margin-bottom: 16px;
+    letter-spacing: 0.03em;
+}
+
+.personal-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.personal-info-container p {
+    margin: 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #fafafa;
+    border: 1px solid #ececec;
+    color: #2b2b2b;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+    main {
+        padding: 28px 16px 48px;
+    }
+
+    .container h1 {
+        font-size: 1.9rem;
+    }
+
+    .record-container {
+        gap: 12px;
+    }
+
+    .record-container p {
+        min-width: 92px;
+        padding: 12px 14px;
+    }
+}

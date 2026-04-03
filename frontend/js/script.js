@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById("login-form");               // login form
     const registerForm = document.getElementById("register-form");         // register form
 
+    if (!loginButton || !registerButton || !loginForm || !registerForm) {
+        return;
+    }
+
     // show/hide forms
     loginButton.addEventListener('click', () => {
         loginForm.classList.toggle('d-none');
@@ -58,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success){
+                localStorage.setItem("email", data.email);
                 window.location.href = "/home.html";
             }
             else {
@@ -71,5 +76,4 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Something went wrong while logging in.');
         });
     });
-
 });

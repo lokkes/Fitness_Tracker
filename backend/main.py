@@ -1,16 +1,22 @@
 from pathlib import Path
-from fastapi import FastAPI,HTTPException,Depends
+import shutil
+
+from fastapi import FastAPI,HTTPException,Depends,Form, UploadFile, File
 from .schemas import CreateUser,UserLogin,PersonalInfo
 from .db import sessionLocal,get_db
 from passlib.hash import bcrypt
-from .models import user as UserModel, UserInfo
+from .models import user as UserModel,UserInfo
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from sqlalchemy.exc import SQLAlchemyError
 
 
 app = FastAPI()
-FRONTEND_DIR = Path("./frontend")
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
 TEMPLATES_DIR = FRONTEND_DIR / "templates"
+UPLOADS_DIR = BASE_DIR / "uploads"
+LEGACY_UPLOADS_DIR = FRONTEND_DIR / "uploads"
 
 
 @app.post("/register")
@@ -39,51 +45,138 @@ def login_user(user : UserLogin,db=Depends(get_db)):
     user_exists = db.query(UserModel).filter(UserModel.email==user.email).first()
     if user_exists:
         if bcrypt.verify(user.password,user_exists.password):
-            return {"success" : True, "message" : "Logged in"}
+            return {"success" : True, "email": f"{user.email}"}
         else:
             return {"success" : False, "message" : "wrong password, try agiain"}    
     else:
         return {"success" : False, "message" : "user doesnt exist , please create a new account"}
 
 @app.post("/add_info")
-def add_info(info:PersonalInfo,user_email:str,db=Depends(get_db)):    
-    user = db.query(UserModel).filter(UserModel.email == user_email).first()
+
+def add_info(
+    email: str = Form(...),
+    name: str = Form(...),
+    height: float = Form(...),
+    weight: float = Form(...),
+    fights: int = Form(...),
+    wins: int = Form(...),
+    losses: int = Form(...),
+    draws: int = Form(...),
+    image: UploadFile = File(None),
+    db=Depends(get_db)
+):  
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
+    if image:
+        saved_image_path = UPLOADS_DIR / image.filename
+        with open(saved_image_path, "wb") as file_object:
+            shutil.copyfileobj(image.file, file_object)
+        image_path = f"uploads/{image.filename}"
+    else:
+        image_path = None 
+    
+    user = db.query(UserModel).filter(UserModel.email == email).first()
     if not user:
-        return {"error": "User not found"}
+        return {"success":False ,"message": "User not found"}
+    
+    existing_user = db.query(UserInfo).filter(UserInfo.user_id == user.id).first()
+    if existing_user:
+        return {"success": False, "message": "User info already exists. Use update instead."}
+    
     user_info = UserInfo(
-    user_id=user.id,
-    image = info.image_path,
-    name=info.name,
-    height=info.height,
-    weight=info.weight,
-    fights=info.fights,
-    wins=info.wins,
-    losses=info.losses,
-    draws=info.draws
-)
-    db.add(user_info)
-    db.commit()
-    db.refresh(user_info)
+        user_id=user.id,
+        name=name.strip() or user.name,
+        height=height,
+        weight=weight,
+        fights=fights,
+        wins=wins,
+        losses=losses,
+        draws=draws,
+        image_path=image_path
+    )
+
+    try:
+        db.add(user_info)
+        db.commit()
+        db.refresh(user_info)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not save user info: {exc.__class__.__name__}")
+
+    return {"success": True, "message": "User info saved", "image_path": image_path}
+
+
 
 @app.put("/add_info")
-def edit_info(info:PersonalInfo,db=Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.email == info.email).first()
+def edit_info(
+    email: str = Form(...),
+    name: str = Form(...),
+    height: float = Form(...),
+    weight: float = Form(...),
+    fights: int = Form(...),
+    wins: int = Form(...),
+    losses: int = Form(...),
+    draws: int = Form(...),
+    image: UploadFile = File(None),
+    db=Depends(get_db)
+):
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
+    user = db.query(UserModel).filter(UserModel.email == email).first()
     if not user:
-        return {"message": "User not found"}
-    
+        return {"success": False, "message": "User not found"}
+
     user_info = db.query(UserInfo).filter(UserInfo.user_id == user.id).first()
     if not user_info:
-        return {"message": "User info not found"}
+        return {"success": False, "message": "User info not found"}
 
-    user_info.image_path = info.image_path
-    user_info.height = info.height
-    user_info.weight = info.weight
-    user_info.fights = info.fights
-    user_info.wins = info.wins
-    user_info.losses = info.losses
-    user_info.draws = info.draws
+    if image and image.filename:
+        saved_image_path = UPLOADS_DIR / image.filename
+        with open(saved_image_path, "wb") as file_object:
+            shutil.copyfileobj(image.file, file_object)
+        user_info.image_path = f"uploads/{image.filename}"
 
-    db.commit()
+    user_info.name = name.strip() or user.name
+    user_info.height = height
+    user_info.weight = weight
+    user_info.fights = fights
+    user_info.wins = wins
+    user_info.losses = losses
+    user_info.draws = draws
+
+    try:
+        db.commit()
+        db.refresh(user_info)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not update user info: {exc.__class__.__name__}")
+
+    return {"success": True, "message": "User info updated", "image_path": user_info.image_path}
+
+
+@app.get("/api/profile")
+def get_info(email:str,db=Depends(get_db)):
+
+    user = db.query(UserModel).filter(UserModel.email == email).first()
+    if not user :
+        return {"success":False, "message" : "User not found"}
+    user_info = db.query(UserInfo).filter(UserInfo.user_id == user.id).first()
+    print("im here")
+    return {
+    "success": True,
+    "data": {
+        "name": user_info.name,
+        "height": user_info.height,
+        "weight": user_info.weight,
+        "fights": user_info.fights,
+        "wins": user_info.wins,
+        "losses": user_info.losses,
+        "draws": user_info.draws,
+        "image_path": user_info.image_path
+    }
+}
+
+
 
 @app.get("/")
 def root():
@@ -100,6 +193,20 @@ def home_page():
 @app.get("/add_data.html")
 def add_data_page():
     return FileResponse(TEMPLATES_DIR / "add_data.html")
+
+@app.get("/profile")
+@app.get("/profile.html")
+def get_profile():
+    print("get_profile_hit")
+    return FileResponse(TEMPLATES_DIR / "profile.html")
+
+@app.get("/uploads/{filename:path}")
+def get_uploaded_file(filename: str):
+    for directory in (UPLOADS_DIR, LEGACY_UPLOADS_DIR):
+        file_path = directory / filename
+        if file_path.is_file():
+            return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail="Uploaded file not found")
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
@@ -119,5 +226,3 @@ app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 
         
-
-

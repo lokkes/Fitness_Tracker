@@ -1,14 +1,20 @@
-from pathlib import Path
+import os
 import shutil
+import json
+from pathlib import Path
+from typing import Optional
+from urllib import error, request
 
-from fastapi import FastAPI,HTTPException,Depends,Form, UploadFile, File
-from .schemas import CreateUser,UserLogin,PersonalInfo
-from .db import sessionLocal,get_db
-from passlib.hash import bcrypt
-from .models import user as UserModel,UserInfo
-from fastapi.staticfiles import StaticFiles
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from passlib.hash import bcrypt
+from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
+
+from .db import get_db
+from .models import UserInfo, user as UserModel
+from .schemas import CreateUser, TrainingPlan, UserLogin
 
 
 app = FastAPI()
@@ -17,6 +23,7 @@ FRONTEND_DIR = BASE_DIR / "frontend"
 TEMPLATES_DIR = FRONTEND_DIR / "templates"
 UPLOADS_DIR = BASE_DIR / "uploads"
 LEGACY_UPLOADS_DIR = FRONTEND_DIR / "uploads"
+
 
 
 @app.post("/register")
@@ -161,7 +168,8 @@ def get_info(email:str,db=Depends(get_db)):
     if not user :
         return {"success":False, "message" : "User not found"}
     user_info = db.query(UserInfo).filter(UserInfo.user_id == user.id).first()
-    print("im here")
+    if not user_info:
+        return {"success": False, "message": "User info not found"}
     return {
     "success": True,
     "data": {
@@ -175,7 +183,6 @@ def get_info(email:str,db=Depends(get_db)):
         "image_path": user_info.image_path
     }
 }
-
 
 
 @app.get("/")
@@ -197,7 +204,6 @@ def add_data_page():
 @app.get("/profile")
 @app.get("/profile.html")
 def get_profile():
-    print("get_profile_hit")
     return FileResponse(TEMPLATES_DIR / "profile.html")
 
 @app.get("/uploads/{filename:path}")
@@ -210,15 +216,6 @@ def get_uploaded_file(filename: str):
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
-
-
-
-
-
-
-
-    
-    
 
 
 

@@ -13,8 +13,9 @@ from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 
 from .db import get_db
-from .models import UserInfo, user as UserModel
-from .schemas import CreateUser, TrainingPlan, UserLogin
+from .models import UserInfo, UserPerformance, user as UserModel
+from .schemas import CreateUser, PerformanceRequest, TrainingRequest, UserLogin
+from .modules import create_plan
 
 
 app = FastAPI()
@@ -182,8 +183,123 @@ def get_info(email:str,db=Depends(get_db)):
         "draws": user_info.draws,
         "image_path": user_info.image_path
     }
-}
+    }
 
+
+@app.get("/api/user_summary")
+def get_user_summary(email: str, db=Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.email == email).first()
+    if not user:
+        return {"success": False, "message": "User not found"}
+
+    user_info = db.query(UserInfo).filter(UserInfo.user_id == user.id).first()
+    display_name = user_info.name if user_info and user_info.name else user.name
+
+    return {
+        "success": True,
+        "data": {
+            "name": display_name,
+            "email": user.email,
+        }
+    }
+
+@app.post("/training_plan")
+def trainings_plan(plan: TrainingRequest):
+    result = create_plan(plan)
+    return {
+        "success": True,
+        **result
+    }
+
+
+@app.get("/api/performance")
+def get_performance(email: str, db=Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.email == email).first()
+    if not user:
+        return {"success": False, "message": "User not found"}
+
+    performance = db.query(UserPerformance).filter(UserPerformance.user_id == user.id).first()
+    if not performance:
+        return {"success": False, "message": "Performance data not found"}
+
+    return {
+        "success": True,
+        "data": {
+            "sprint_100m_seconds": performance.sprint_100m_seconds,
+            "sprint_400m_seconds": performance.sprint_400m_seconds,
+            "run_5k_minutes": performance.run_5k_minutes,
+            "bench_press_kg": performance.bench_press_kg,
+            "squat_kg": performance.squat_kg,
+            "deadlift_kg": performance.deadlift_kg,
+            "pull_ups": performance.pull_ups,
+            "push_ups": performance.push_ups,
+            "rounds_completed": performance.rounds_completed,
+        }
+    }
+
+
+@app.post("/performance")
+def add_performance(payload: PerformanceRequest, db=Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.email == payload.email).first()
+    if not user:
+        return {"success": False, "message": "User not found"}
+
+    existing_performance = db.query(UserPerformance).filter(UserPerformance.user_id == user.id).first()
+    if existing_performance:
+        return {"success": False, "message": "Performance data already exists. Use update instead."}
+
+    performance = UserPerformance(
+        user_id=user.id,
+        sprint_100m_seconds=payload.sprint_100m_seconds,
+        sprint_400m_seconds=payload.sprint_400m_seconds,
+        run_5k_minutes=payload.run_5k_minutes,
+        bench_press_kg=payload.bench_press_kg,
+        squat_kg=payload.squat_kg,
+        deadlift_kg=payload.deadlift_kg,
+        pull_ups=payload.pull_ups,
+        push_ups=payload.push_ups,
+        rounds_completed=payload.rounds_completed,
+    )
+
+    try:
+        db.add(performance)
+        db.commit()
+        db.refresh(performance)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not save performance: {exc.__class__.__name__}")
+
+    return {"success": True, "message": "Performance saved successfully"}
+
+
+@app.put("/performance")
+def update_performance(payload: PerformanceRequest, db=Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.email == payload.email).first()
+    if not user:
+        return {"success": False, "message": "User not found"}
+
+    performance = db.query(UserPerformance).filter(UserPerformance.user_id == user.id).first()
+    if not performance:
+        return {"success": False, "message": "Performance data not found"}
+
+    performance.sprint_100m_seconds = payload.sprint_100m_seconds
+    performance.sprint_400m_seconds = payload.sprint_400m_seconds
+    performance.run_5k_minutes = payload.run_5k_minutes
+    performance.bench_press_kg = payload.bench_press_kg
+    performance.squat_kg = payload.squat_kg
+    performance.deadlift_kg = payload.deadlift_kg
+    performance.pull_ups = payload.pull_ups
+    performance.push_ups = payload.push_ups
+    performance.rounds_completed = payload.rounds_completed
+
+    try:
+        db.commit()
+        db.refresh(performance)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not update performance: {exc.__class__.__name__}")
+
+    return {"success": True, "message": "Performance updated successfully"}
 
 @app.get("/")
 def root():
@@ -196,6 +312,14 @@ def index_page():
 @app.get("/home.html")
 def home_page():
     return FileResponse(TEMPLATES_DIR / "home.html")
+
+@app.get("/training_plan")
+def training_plan_page():
+    return FileResponse(TEMPLATES_DIR / "training_plan.html")
+
+@app.get("/track_Performance")
+def performance_page():
+    return FileResponse(TEMPLATES_DIR / "performance.html")
 
 @app.get("/add_data.html")
 def add_data_page():

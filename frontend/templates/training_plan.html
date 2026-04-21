@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Plan Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style/training_plan.css?v=1">
+</head>
+
+<body>
+    <div class="page-shell">
+        <aside class="hero-panel">
+            <div class="hero-overlay"></div>
+            <div class="hero-copy">
+                <p class="eyebrow">Smart Boxing Planner</p>
+                <h1>Build a fight camp that feels personal, focused, and realistic.</h1>
+                <p class="hero-text">
+                    Answer a few short questions. We will shape a weekly boxing plan around your goals,
+                    availability, experience, and equipment.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">01</span>
+                        <span class="stat-label">Question at a time</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">02</span>
+                        <span class="stat-label">Adaptive training logic</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">03</span>
+                        <span class="stat-label">Weekly table view</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="planner-panel">
+            <div class="planner-topbar">
+                <a href="/home.html" class="top-link">Back Home</a>
+                <div class="topbar-actions">
+                    <span class="status-pill">Live backend flow</span>
+                </div>
+            </div>
+
+            <section class="wizard-card">
+                <div class="wizard-header">
+                    <div>
+                        <p class="section-tag">Training Intake</p>
+                        <h2>Personalized training plan</h2>
+                    </div>
+                    <div class="progress-meta">
+                        <span id="step-label">Step 1 of 6</span>
+                        <span id="progress-percent">17%</span>
+                    </div>
+                </div>
+
+                <div class="progress-track" aria-hidden="true">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <form id="training-plan-form" class="wizard-form">
+                    <section class="question-step active" data-step="0">
+                        <p class="question-kicker">Foundation</p>
+                        <h3>What best describes your current boxing level?</h3>
+                        <p class="question-copy">This helps us set the right balance between technique, conditioning, and sparring.</p>
+                        <div class="choice-grid">
+                            <label class="choice-card">
+                                <input type="radio" name="experience" value="beginner" checked>
+                                <span>Beginner</span>
+                                <small>Build strong basics and recover well.</small>
+                            </label>
+                            <label class="choice-card">
+                                <input type="radio" name="experience" value="intermediate">
+                                <span>Intermediate</span>
+                                <small>Mix sharper work with harder sessions.</small>
+                            </label>
+                            <label class="choice-card">
+                                <input type="radio" name="experience" value="advanced">
+                                <span>Advanced</span>
+                                <small>Higher intensity and more tactical variety.</small>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="question-step" data-step="1">
+                        <p class="question-kicker">Goals</p>
+                        <h3>What are your main goals right now?</h3>
+                        <p class="question-copy">Choose at least one. You can mix performance and conditioning goals.</p>
+                        <div class="chip-grid">
+                            <label class="chip-option">
+                                <input type="checkbox" name="primary_goals" value="technique" checked>
+                                <span>Technique</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="primary_goals" value="stamina">
+                                <span>Stamina</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="primary_goals" value="power">
+                                <span>Power</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="primary_goals" value="weight_loss">
+                                <span>Weight Loss</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="primary_goals" value="fight_prep">
+                                <span>Fight Prep</span>
+                            </label>
+                        </div>
+
+                        <label class="text-field">
+                            <span>Fight date (optional)</span>
+                            <input type="date" name="fight_date">
+                        </label>
+                    </section>
+
+                    <section class="question-step" data-step="2">
+                        <p class="question-kicker">Schedule</p>
+                        <h3>How much time can you train each week?</h3>
+                        <p class="question-copy">We’ll use this to decide session frequency and workout size.</p>
+                        <div class="form-grid">
+                            <label class="text-field">
+                                <span>Days per week</span>
+                                <input type="range" name="days_per_week" min="1" max="7" value="4" id="days-range">
+                                <strong id="days-range-value">4 days</strong>
+                            </label>
+                            <label class="text-field">
+                                <span>Session duration (minutes)</span>
+                                <input type="range" name="session_duration" min="30" max="120" step="15" value="60" id="duration-range">
+                                <strong id="duration-range-value">60 min</strong>
+                            </label>
+                        </div>
+
+                        <div class="choice-grid compact">
+                            <label class="choice-card">
+                                <input type="radio" name="preferred_time" value="morning">
+                                <span>Morning</span>
+                                <small>Sharper starts and earlier sessions.</small>
+                            </label>
+                            <label class="choice-card">
+                                <input type="radio" name="preferred_time" value="evening" checked>
+                                <span>Evening</span>
+                                <small>Train after work or school.</small>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="question-step" data-step="3">
+                        <p class="question-kicker">Equipment</p>
+                        <h3>What do you have access to?</h3>
+                        <p class="question-copy">We’ll avoid suggesting work that needs gear you don’t have.</p>
+                        <div class="toggle-grid">
+                            <label class="toggle-card">
+                                <span>Heavy bag</span>
+                                <input type="checkbox" name="has_heavy_bag" checked>
+                            </label>
+                            <label class="toggle-card">
+                                <span>Speed bag</span>
+                                <input type="checkbox" name="has_speed_bag">
+                            </label>
+                            <label class="toggle-card">
+                                <span>Sparring partner</span>
+                                <input type="checkbox" name="has_sparring_partner">
+                            </label>
+                            <label class="toggle-card">
+                                <span>Gym access</span>
+                                <input type="checkbox" name="has_gym" checked>
+                            </label>
+                            <label class="toggle-card">
+                                <span>Weights</span>
+                                <input type="checkbox" name="has_weights" checked>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="question-step" data-step="4">
+                        <p class="question-kicker">Priorities</p>
+                        <h3>Where do you want the most support?</h3>
+                        <p class="question-copy">Choose your weak points so the plan can lean into them.</p>
+                        <div class="chip-grid">
+                            <label class="chip-option">
+                                <input type="checkbox" name="weakness" value="cardio">
+                                <span>Cardio</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="weakness" value="defense">
+                                <span>Defense</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="weakness" value="power">
+                                <span>Power</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="weakness" value="speed">
+                                <span>Speed</span>
+                            </label>
+                            <label class="chip-option">
+                                <input type="checkbox" name="weakness" value="technique">
+                                <span>Technique</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="question-step" data-step="5">
+                        <p class="question-kicker">Context</p>
+                        <h3>One last check before we build your plan.</h3>
+                        <p class="question-copy">These details help control session intensity and recovery emphasis.</p>
+                        <div class="form-grid">
+                            <label class="text-field">
+                                <span>Current training week</span>
+                                <input type="number" name="current_week" min="1" value="1">
+                            </label>
+                            <label class="text-field">
+                                <span>Missed sessions last week</span>
+                                <input type="number" name="missed_sessions_last_week" min="0" max="7" value="0">
+                            </label>
+                            <label class="text-field">
+                                <span>Fatigue level (1-10)</span>
+                                <input type="range" name="fatigue_level" min="1" max="10" value="5" id="fatigue-range">
+                                <strong id="fatigue-range-value">5 / 10</strong>
+                            </label>
+                        </div>
+
+                        <div class="summary-box">
+                            <p>When you submit, the frontend will send your answers to the backend and render the returned weekly plan below.</p>
+                        </div>
+                    </section>
+
+                    <div class="form-feedback" id="form-feedback" role="status" aria-live="polite"></div>
+
+                    <div class="wizard-actions">
+                        <button type="button" class="secondary-btn" id="prev-step-btn">Previous</button>
+                        <button type="button" class="primary-btn" id="next-step-btn">Next</button>
+                        <button type="submit" class="primary-btn submit-btn hidden" id="submit-plan-btn">Build Plan</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="results-card hidden" id="results-card">
+                <div class="results-header">
+                    <div>
+                        <p class="section-tag">Weekly Output</p>
+                        <h2>Your training plan</h2>
+                    </div>
+                    <button type="button" class="secondary-btn" id="build-another-btn">Create Another Plan</button>
+                </div>
+
+                <div class="overview-grid" id="overview-grid"></div>
+
+                <div class="table-shell">
+                    <table class="plan-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Focus</th>
+                                <th>Duration</th>
+                                <th>Workout</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plan-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/training_plan.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from enum import Enum
 
@@ -39,24 +39,14 @@ class GoalInfo(BaseModel):
     primary_goals: List[TrainingGoal]
     fight_date: Optional[str] = None
 
-
 class TrainingTime(str, Enum):
     morning = "morning"
     evening = "evening"
 
 class Availability(BaseModel):
-    days_per_week: int
-    session_duration: Optional[int] = None
+    days_per_week: int = Field(..., ge=1, le=7)
+    session_duration: Optional[int] = Field(default=60, ge=15, le=180)
     preferred_time: Optional[TrainingTime] = None
-
-class BoxingSkills(BaseModel):
-    weaknesses: Optional[List[str]] = None
-    strengths: Optional[List[str]] = None
-    style: Optional[str] = None
-
-class HealthInfo(BaseModel):
-    injuries: Optional[List[str]] = None
-
 
 class Equipment(BaseModel):
     has_heavy_bag: Optional[bool] = None
@@ -65,15 +55,41 @@ class Equipment(BaseModel):
     has_gym: Optional[bool] = None
     has_weights: Optional[bool] = None
 
-class TrainingPlan(BaseModel):
+class Weakness(str, Enum):
+    cardio = "cardio"
+    defense = "defense"
+    power = "power"
+    speed = "speed"
+    technique = "technique"
+
+class TrainingContext(BaseModel):
+    current_week: int = Field(default=1, ge=1)
+    missed_sessions_last_week: int = Field(default=0, ge=0)
+    fatigue_level: int = Field(default=5, ge=1, le=10)
+
+class TrainingRequest(BaseModel):
     
     experience: ExperienceLevel
-
     goal: GoalInfo
     availability: Availability
-
-    skills: Optional[BoxingSkills] = None
-    health: Optional[HealthInfo] = None
     equipment: Optional[Equipment] = None
+    weakness: Optional[List[Weakness]] = None
+    context: Optional[TrainingContext] = None
+
+
+class PerformanceBase(BaseModel):
+    sprint_100m_seconds: Optional[float] = Field(default=None, ge=0)
+    sprint_400m_seconds: Optional[float] = Field(default=None, ge=0)
+    run_5k_minutes: Optional[float] = Field(default=None, ge=0)
+    bench_press_kg: Optional[float] = Field(default=None, ge=0)
+    squat_kg: Optional[float] = Field(default=None, ge=0)
+    deadlift_kg: Optional[float] = Field(default=None, ge=0)
+    pull_ups: Optional[int] = Field(default=None, ge=0)
+    push_ups: Optional[int] = Field(default=None, ge=0)
+    rounds_completed: Optional[int] = Field(default=None, ge=0)
+
+
+class PerformanceRequest(PerformanceBase):
+    email: str
 
     

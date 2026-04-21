@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Performance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style/performance.css?v=1">
+</head>
+
+<body>
+    <div class="performance-page">
+        <aside class="performance-hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Track Performance</p>
+                <h1>Measure the work, not just the motivation.</h1>
+                <p>
+                    Save sprint times, running pace, strength PRs, and conditioning numbers in one place.
+                    Come back anytime to update your latest progress.
+                </p>
+
+                <div class="hero-list">
+                    <div class="hero-item">Sprint and running metrics</div>
+                    <div class="hero-item">Strength personal records</div>
+                    <div class="hero-item">Conditioning and round volume</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="performance-main">
+            <div class="topbar">
+                <a href="/home.html" class="top-link">Back Home</a>
+                <a href="/training_plan" class="top-link ghost-link">Training Planner</a>
+            </div>
+
+            <section class="performance-card">
+                <div class="card-header">
+                    <div>
+                        <p class="section-tag">Boxer Metrics</p>
+                        <h2>Performance tracker</h2>
+                    </div>
+                    <span class="status-badge" id="performance-status-badge">Ready</span>
+                </div>
+
+                <p class="card-copy">
+                    This page stores your current numbers so you can update them whenever your performance improves.
+                </p>
+
+                <form id="performance-form" class="performance-form">
+                    <div class="metric-grid">
+                        <label class="metric-field">
+                            <span>100m sprint (seconds)</span>
+                            <input type="number" id="sprint_100m_seconds" step="0.01" min="0" placeholder="12.80">
+                        </label>
+                        <label class="metric-field">
+                            <span>400m sprint (seconds)</span>
+                            <input type="number" id="sprint_400m_seconds" step="0.01" min="0" placeholder="62.50">
+                        </label>
+                        <label class="metric-field">
+                            <span>5k run (minutes)</span>
+                            <input type="number" id="run_5k_minutes" step="0.01" min="0" placeholder="24.30">
+                        </label>
+                        <label class="metric-field">
+                            <span>Bench press PR (kg)</span>
+                            <input type="number" id="bench_press_kg" step="0.5" min="0" placeholder="80">
+                        </label>
+                        <label class="metric-field">
+                            <span>Squat PR (kg)</span>
+                            <input type="number" id="squat_kg" step="0.5" min="0" placeholder="100">
+                        </label>
+                        <label class="metric-field">
+                            <span>Deadlift PR (kg)</span>
+                            <input type="number" id="deadlift_kg" step="0.5" min="0" placeholder="120">
+                        </label>
+                        <label class="metric-field">
+                            <span>Pull-ups max reps</span>
+                            <input type="number" id="pull_ups" min="0" placeholder="15">
+                        </label>
+                        <label class="metric-field">
+                            <span>Push-ups max reps</span>
+                            <input type="number" id="push_ups" min="0" placeholder="50">
+                        </label>
+                        <label class="metric-field">
+                            <span>Hard rounds completed</span>
+                            <input type="number" id="rounds_completed" min="0" placeholder="8">
+                        </label>
+                    </div>
+
+                    <div class="feedback-row">
+                        <p id="performance-feedback" class="feedback-text" role="status" aria-live="polite"></p>
+                    </div>
+
+                    <div class="action-row">
+                        <button type="button" id="refresh-performance-btn" class="secondary-btn">Refresh Data</button>
+                        <button type="submit" class="primary-btn">Save Performance</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="snapshot-card">
+                <div class="card-header">
+                    <div>
+                        <p class="section-tag">Quick Snapshot</p>
+                        <h2>Current numbers</h2>
+                    </div>
+                </div>
+                <div class="snapshot-grid" id="snapshot-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/performance.js?v=1"></script>
+</body>
+
+</html>

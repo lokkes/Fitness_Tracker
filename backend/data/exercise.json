@@ -1,0 +1,71 @@
+{
+  "cardio": [
+    "Jump rope (15–20 min steady pace)",
+    "Jump rope (interval: 1 min fast / 30 sec slow)",
+    "Road running (5–8 km endurance)",
+    "Sprint intervals (10 x 100m)",
+    "Hill sprints (8–12 reps)",
+    "Shadowboxing high pace (6–8 rounds)",
+    "Assault bike intervals (10 x 1 min)",
+    "Rowing machine endurance (20 min)"
+  ],
+
+  "speed": [
+    "Speed bag (3–5 rounds, nonstop rhythm)",
+    "Double-end bag reaction drills",
+    "Fast jab-only shadowboxing (5 rounds)",
+    "Slip rope + counter punch drills",
+    "Partner reaction drills (random cue punches)",
+    "Mirror boxing (explosive combinations)",
+    "Hand speed ladder drills"
+  ],
+
+  "technique": [
+    "Technical shadowboxing (footwork focus)",
+    "Defense drills (slips, rolls, parries)",
+    "Pad work (jab-cross-hook combinations)",
+    "Angle stepping drills",
+    "Distance control shadowboxing",
+    "Counter punching drills",
+    "Ring control movement drills"
+  ],
+
+  "power": [
+    "Heavy bag power rounds (full force punches)",
+    "Medicine ball rotational throws",
+    "Weighted squat jumps",
+    "Deadlifts (strength base)",
+    "Bench press explosive reps",
+    "Push-up explosive clap variations",
+    "Kettlebell swings (hip power)",
+    "Resistance band punches"
+  ],
+
+  "strength": [
+    "Squats (heavy, 3–5 reps sets)",
+    "Deadlifts (compound strength)",
+    "Pull-ups weighted or bodyweight",
+    "Core planks (3–5 min total holds)",
+    "Hanging leg raises",
+    "Farmer’s walk (grip + core)",
+    "Dumbbell shoulder press"
+  ],
+
+  "sparring": [
+    "Light technical sparring (50% intensity)",
+    "Situational sparring (jab-only)",
+    "Defense-only sparring rounds",
+    "Body-only sparring",
+    "Full sparring rounds (controlled intensity)",
+    "Counter-only sparring drills"
+  ],
+
+  "recovery": [
+    "Active stretching (10–15 min)",
+    "Ice bath or cold shower",
+    "Mobility drills (hips, shoulders)",
+    "Breathing exercises (4-7-8 method)",
+    "Foam rolling full body",
+    "Light jogging recovery (20 min)"
+  ]
+}

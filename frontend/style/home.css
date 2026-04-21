@@ -1,53 +1,63 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* optional but recommended for consistent sizing */
+    box-sizing: border-box;
 }
+
 html {
     scroll-behavior: smooth;
 }
 
-.username {
-    margin-right: 30px; /* adds 20px space after username */
+body {
+    background: #111;
+    color: whitesmoke;
 }
 
-.header-dec h1{
+.username {
+    margin-right: 30px;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    line-height: 1.2;
+}
+
+.header-dec h1 {
     color: whitesmoke;
 }
 
 .header-container {
     display: flex;
-    justify-content: space-between; /* left text, right button */
-    align-items: flex-start;        /* align top */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
     padding: 20px 40px;
     background-color: black;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .text h2 {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 4vw, 2.8rem);
     font-weight: bold;
     margin-bottom: 10px;
     color: #FF1493;
 }
 
 .text p {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     line-height: 1.6;
-    color: gray
+    color: gray;
 }
 
-.form-section{
+.form-section {
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     gap: 24px;
     min-height: calc(100vh - 80px);
-    padding: 48px 100px;
+    padding: 48px 24px;
     background-color: #111;
     color: whitesmoke;
 }
 
-.data-form{
+.data-form {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -163,18 +173,17 @@ html {
 
 /* Each section */
 .motivation-section {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-    padding: 120px 120px;
+    padding: 96px 96px;
 }
 
 .home-container {
     height: 100vh;
     overflow-y: scroll;
-
     scroll-snap-type: y mandatory;
 }
 
@@ -187,52 +196,149 @@ html {
 }
 
 .motivation-section img {
-    width: 350px;        /* fixed width */
-    height: auto;        /* keeps aspect ratio */
+    width: min(100%, 350px);
+    height: auto;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 .link-text {
     margin: 0;
-    color: whitesmoke;        /* dark pink */
+    color: whitesmoke;
     font-weight: 500;
     cursor: pointer;
-    text-decoration: none; /* remove underline if desired */
+    text-decoration: none;
 }
 
 .link-text:hover {
-    color: pink; /* optional hover effect */
+    color: pink;
 }
 
 .text-block {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
 }
 
 .text-block .link-text {
-    margin-left: 20px;       /* indent the two p slightly */
-    margin-top: 5px;         /* space between h1 and ps */
-    cursor: pointer;         /* optional: indicate clickable */
-    color: whitesmoke;          /* or your dark pink */
+    cursor: pointer;
+    color: whitesmoke;
     font-weight: 500;
 }
 
-.logout-btn {
-    align-self: flex-start;  /* button aligns top of container */
-    padding: 10px 20px;
-    background-color: #D0006F; /* modern dark pink */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    
+.nav-link {
+    text-decoration: none;
 }
 
-.profile{
-   padding: 2%;
+.header-container > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.logout-btn {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: #D0006F;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.profile {
+    padding: 2%;
+    text-decoration: none;
 }
 
 .logout-btn:hover {
-    background-color: #FF1493; /* hover effect */
+    background-color: #FF1493;
+}
+
+.logout-btn a {
+    text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 18px 24px;
+    }
+
+    .motivation-section {
+        padding: 72px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .text-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-container > div:last-child {
+        justify-content: flex-start;
+    }
+
+    .home-container {
+        height: auto;
+        overflow-y: visible;
+        scroll-snap-type: none;
+    }
+
+    .motivation-section,
+    .motivation-section.reverse {
+        min-height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 48px 20px;
+    }
+
+    .motivation-section img {
+        width: 100%;
+        max-width: 440px;
+    }
+
+    .form-section {
+        padding: 36px 16px;
+    }
+
+    .data-form {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .username {
+        margin-right: 0;
+    }
+
+    .logout-btn,
+    .profile,
+    .nav-link {
+        width: 100%;
+    }
+
+    .header-container > div:last-child {
+        width: 100%;
+    }
+
+    .logout-btn {
+        width: 100%;
+    }
+
+    .logout-btn a,
+    .profile .link-text,
+    .nav-link .link-text {
+        display: block;
+        width: 100%;
+    }
 }
